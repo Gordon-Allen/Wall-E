@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'wall_e_app/css/style.css' %}">
+    <title>Welcome</title>
+</head>
+<body>
+    <div class="container">
+        <div class="page_header">
+            <h1>Wall-E</h1>
+            <h5><em>A Community of Messages and Comments</em></h5>
+            <h4>Welcome {{ user.first_name }}</h4>
+            <a href="/log_out">Log Out</a>
+        </div>
+        <div class="success-message">
+            <h2>Your Newsfeed</h2>
+        </div>
+        <div class="wall_box">
+            <div class="message_box">
+                <form action='/add_message' method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Post a Message</label>
+                        <textarea  class="form-control" name="message" placeholder="Type Your Message Here"></textarea>
+                        <button type="submit" class="btn btn-primary mb-2">Post Message</button>
+                    </div>
+                </form>
+            </div>
+            <div class="message_comment_box">
+                <h2 style="text-align: center; text-decoration-line: underline;">Your Community Message Board</h2>
+                {% if post_data %}
+                    {% for post in post_data %}
+                    <fieldset>
+                        <h3>Message #{{post.id}}</h3>
+                        <h4>{{post.user.first_name}} {{post.user.last_name}} @ {{post.created_at}}</h4>
+                        <ul>
+                            <em><li><h5>"{{post.message}}"</h5></li></em>
+                        </ul>
+                        {% if post.user.id == request.session.id %}
+                        <div class="hidden_box">
+                            <form action='/message/delete/{{post.id}}'>
+                                <input type="hidden">
+                                <button type="submit" class="btn btn-primary">Delete Message</button>
+                            </form>
+                        </div>
+                        {% endif %}
+                        {% if comment_data %}
+                            {% for comment in comment_data %}
+                            <ul style="display: block;">
+                                {% if comment.message.id == post.id %}
+                                <li>--> {{comment.user.first_name}} {{comment.user.last_name}} - {{comment.created_at}} <ul style="display: block;"><li><em>"{{comment.Comment}}"</em></li></ul></li>
+                                {% endif %}
+                            </ul>
+                            {% if comment.user.id == request.session.id %}
+                            <div class="hidden_box">
+                                <form action='/comment/delete/{{comment.id}}'>
+                                    <input type="hidden">
+                                    <button type="submit" class="btn btn-primary btn-sm mb-2">Delete Comment</button>
+                                </form>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <h6>Post a Comment:</h6>
+                        <form action='/add_comment' method="post">
+                            {% csrf_token %}
+                            <input type="hidden" value={{post.id}} name="message_id">
+                            <textarea class="form-control" name="comment" id="comment" placeholder="Type Your Comment Here"></textarea>
+                            <button type="submit" class="btn btn-primary mb-2">Post Comment</button>
+                        </form>
+                    </fieldset>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
