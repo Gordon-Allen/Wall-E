@@ -7,14 +7,14 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     {% load static %}
     <link rel="stylesheet" href="{% static 'wall_e_app/css/style.css' %}">
-    <title>Welcome</title>
+    <title>{{user.first_name}}'s' Newsfeed</title>
 </head>
 <body>
     <div class="container">
         <div class="page_header">
             <h1>Wall-E</h1>
             <h5><em>A Community of Messages and Comments</em></h5>
-            <h4>Welcome {{ user.first_name }}</h4>
+            <h4>Welcome {{user.first_name}}</h4>
             <a href="/log_out">Log Out</a>
         </div>
         <div class="success-message">
