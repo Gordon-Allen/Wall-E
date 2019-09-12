@@ -63,26 +63,26 @@ class Wall_ETest(TestCase):
         self.assertEqual(m_deleted, 1)
 
     def test_commentmodel_create(self):
-        c = Comment.objects.create(Comment = "Does anyone think differently on FooBar, wonders this comment model unit test?!", user= User.objects.get(id=1), message= Message.objects.get(id=2))
-        self.assertEqual(c.Comment, "Does anyone think differently on FooBar, wonders this comment model unit test?!")
-        self.assertEqual(c.user, User.objects.get(id=1))
-        self.assertEqual(c.message, Message.objects.get(id=2))
+        cmt = Comment.objects.create(Comment = "Does anyone think differently on FooBar, wonders this comment model unit test?!", user= User.objects.get(id=1), message= Message.objects.get(id=2))
+        self.assertEqual(cmt.Comment, "Does anyone think differently on FooBar, wonders this comment model unit test?!")
+        self.assertEqual(cmt.user, User.objects.get(id=1))
+        self.assertEqual(cmt.message, Message.objects.get(id=2))
 
     def test_commentmodel_get(self):
-        c = Comment.objects.get(id=1)
-        self.assertEqual(c.id, 1)
-        self.assertIsInstance(c, Comment)
+        cmt = Comment.objects.get(id=1)
+        self.assertEqual(cmt.id, 1)
+        self.assertIsInstance(cmt, Comment)
 
     def test_commentmodel_edit(self):
-        c = Comment.objects.first()
-        c.Comment = "EDITED_Comment Model Unit Test"
-        c.save()
-        edited_c = Comment.objects.first()
-        self.assertEqual(edited_c.Comment, "EDITED_Comment Model Unit Test")
+        cmt = Comment.objects.first()
+        cmt.Comment = "EDITED_Comment Model Unit Test"
+        cmt.save()
+        edited_cmt = Comment.objects.first()
+        self.assertEqual(edited_cmt.Comment, "EDITED_Comment Model Unit Test")
 
     def test_commentmodel_delete(self):
-        c_deleted = Comment.objects.get(id=1).delete()[0]
-        self.assertEqual(c_deleted, 1)
+        cmt_deleted = Comment.objects.get(id=1).delete()[0]
+        self.assertEqual(cmt_deleted, 1)
 
     def test_view_register(self):
         c = Client()
